@@ -1,8 +1,10 @@
 import request from 'superagent';
 
+const URL = process.env.REACT_APP_API_URL || 'https://infinite-sea-11498.herokuapp.com/'; // fallback
+
 export async function fetchBanjos() {
     try {
-        const response = await request.get('https://infinite-sea-11498.herokuapp.com/banjos');
+        const response = await request.get(`${URL}banjos`);
 
         return response.body;
     } catch(err) {
@@ -12,7 +14,7 @@ export async function fetchBanjos() {
 
 export async function fetchBanjo(someId) {
     try {
-        const response = await request.get(`https://infinite-sea-11498.herokuapp.com/banjos/${someId}`);
+        const response = await request.get(`${URL}banjos/${someId}`);
 
         return response.body;
     } catch(err) {
@@ -22,7 +24,7 @@ export async function fetchBanjo(someId) {
 
 export async function fetchBrands() {
     try {
-        const response = await request.get('https://infinite-sea-11498.herokuapp.com/brands');
+        const response = await request.get(`${URL}brands`);
 
         return response.body;
     } catch(err) {
@@ -33,7 +35,7 @@ export async function fetchBrands() {
 export async function createBanjo(newBanjo) {
     try {
         await request
-        .post('https://infinite-sea-11498.herokuapp.com/banjos')
+        .post(`${URL}banjos`)
         .send(newBanjo);
         
         return;
@@ -45,7 +47,7 @@ export async function createBanjo(newBanjo) {
 export async function updateBanjo(someId, newBanjo) {
     try {
         await request
-        .put(`https://infinite-sea-11498.herokuapp.com/banjos/${someId}`)
+        .put(`${URL}banjos/${someId}`)
         .send(newBanjo);
         
         return;
@@ -57,7 +59,7 @@ export async function updateBanjo(someId, newBanjo) {
 
 export async function deleteBanjo(someId) {
     try {
-        await request.delete(`https://infinite-sea-11498.herokuapp.com/banjos/${someId}`);
+        await request.delete(`${URL}banjos/${someId}`);
         
         return;
     } catch(err) {
