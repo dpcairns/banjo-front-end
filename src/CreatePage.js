@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import request from 'superagent';
+import { fetchBrands, createBanjo } from './fetches.js';
 
 const userFromLocalStorageOrWhatever = {
     userId: 1
@@ -13,10 +13,9 @@ export default class CreatePage extends Component {
 
     // on mount, we fetch the brands
     componentDidMount = async () => {
-        const response = await request.get('https://infinite-sea-11498.herokuapp.com/brands');
-
+        const brands = await fetchBrands();
         // then we put those brands in state
-        this.setState({ brands: response.body });
+        this.setState({ brands });
     }
 
 
@@ -24,19 +23,14 @@ export default class CreatePage extends Component {
     handleSubmit = async (e) => {
         // prevent default because it's a form
         e.preventDefault();
-    
-        // build a new banjo using the form data from the user and their localSotrage token or whatever
-        const newBanjo = {
-            brand_id: this.state.brandId,
-            noise_level: this.state.noiseLevel,
-            owner_id: userFromLocalStorageOrWhatever.userId
-        };
-    
+        
         // shoot that data off to our endpoint using a post request
-        await request
-            .post('https://infinite-sea-11498.herokuapp.com/banjos')
-            .send(newBanjo);
-
+        await createBanjo({
+            // build a new banjo using the form data from the user and their localSotrage token or whatever
+                brand_id: this.state.brandId,
+                noise_level: this.state.noiseLevel,
+                owner_id: userFromLocalStorageOrWhatever.userId
+            });
 
         // then redirect the user home so they can see the new banjo.
         this.props.history.push('/');

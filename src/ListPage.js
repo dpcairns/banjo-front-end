@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import request from 'superagent';
+import { fetchBanjos } from './fetches.js';
 
 export default class ListPage extends Component {
     state = {
@@ -7,17 +7,18 @@ export default class ListPage extends Component {
     }
 
     componentDidMount = async () => {
-        const response = await request.get('https://infinite-sea-11498.herokuapp.com/banjos');
-
-        this.setState({ banjos: response.body });
+        const banjos = await fetchBanjos();
+        
+        this.setState({ banjos });
     }
 
     render() {
+        const { banjos } = this.state;
         return (
             <div>
                 {
-                    this.state.banjos.length > 0 
-                    ? this.state.banjos.map(banjo => <div>
+                   banjos.length > 0 
+                    ? banjos.map(banjo => <div>
                         <p>{banjo.brand}</p>
                         <p>{banjo.noise_level}</p>
                     </div>)
