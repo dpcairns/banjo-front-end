@@ -33,7 +33,7 @@ export default class CreatePage extends Component {
         };
     
         // shoot that data off to our endpoint using a post request
-        const banjo = await request
+        await request
             .post('https://infinite-sea-11498.herokuapp.com/banjos')
             .send(newBanjo);
 
