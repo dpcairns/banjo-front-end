@@ -6,6 +6,16 @@ const userFromLocalStorageOrWhatever = {
 };
 
 export default class CreatePage extends Component {
+    state = {
+        brands: []
+    }
+
+    componentDidMount = async () => {
+        const response = await request.get('https://infinite-sea-11498.herokuapp.com/brands');
+
+        this.setState({ brands: response.body });
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -22,6 +32,10 @@ export default class CreatePage extends Component {
         this.props.history.push('/');
     }
 
+    handleChange = (e) => {
+        this.setState({ brandId: e.target.value });
+    }
+
     render() {
         return (
             <div>
@@ -34,7 +48,13 @@ export default class CreatePage extends Component {
 
                     <label>
                         Brand (later, let's make this a dropdown)
-                        <input onChange={e => this.setState({ brandId: e.target.value})} />
+                        <select onChange={this.handleChange}>
+                            {
+                             this.state.brands.map(brand => <option key={brand.id} value={brand.id}>
+                                 {brand.name}
+                             </option>)
+                            }
+                        </select>
                     </label>
                     <button>Submit</button>
                 </form>
